@@ -11,19 +11,30 @@ const App = () => {
 
 
     const userManagerService = useContext(UserManagerServiceContext);
-    const mgr = useRef<UserManager>(new UserManager({authority: "", client_id: "", redirect_uri: ""}));
+    /*const mgr = useRef<UserManager>(new UserManager({authority: "", client_id: "", redirect_uri: ""}));
 
     useEffect(() => {
         if (userManagerService !== undefined) {
             mgr.current = userManagerService.getUserManager();
         }
     })
+    */
+    const userManagerConfig = {
+        authority: process.env.REACT_APP_IDENTITY_SERVER_URI as string,
+        client_id: process.env.REACT_APP_IDENTITY_CLIENT_ID as string,
+        redirect_uri: process.env.REACT_APP_IDENTITY_REDIRECT_URI_CALLBACK as string,
+        post_logout_redirect_uri: process.env.REACT_APP_IDENTITY_REDIRECT_URI as string,
+        response_type: process.env.REACT_APP_IDENTITY_RESPONSE_TYPE as string,
+        scope: 'openid profile'
+    }
 
+    const userManager = new UserManager(userManagerConfig);
+    
     return (
         <BrowserRouter>
             <Routes >
-                <Route path='/callback' element={<Callback userManager={mgr.current} />} />
-                <Route path='/' element={<Home userManager={mgr.current}/>} />
+                <Route path='/callback' element={<Callback userManager={userManager} />} />
+                <Route path='/' element={<Home userManager={userManager}/>} />
             </Routes >
         </BrowserRouter>
     );
