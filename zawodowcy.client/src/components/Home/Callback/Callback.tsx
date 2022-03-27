@@ -1,24 +1,39 @@
-import {useEffect, useState} from "react";
-import {User, UserManager} from "oidc-client-ts";
+import {useEffect, useState, FC} from "react";
+import {State, User, UserManager} from "oidc-client-ts";
 
-const Callback = ({userManager}: any) => {
+interface UserProps {
+    userManager: UserManager;
+    user: boolean;
+    setUser: any;
+}
+
+const Callback:FC<UserProps> = (props) => {
     useEffect(() => {
-        userManager.signinRedirectCallback().then((user: User) => {
+        props.userManager.signinRedirectCallback().then((user: User) => {
+            console.log("XDDDDD")
+            console.log(user)
+            window.history.replaceState({},
+                window.document.title,
+                window.location.origin + window.location.pathname);
             if (user) {
-                userManager.setUser(user);
+                console.log("działa")
+                localStorage.setItem("user", user.access_token);
+                
             }
         });
-    }, [userManager]);
+    });
 
     return (
         <div>
             <p>Loading user data...</p>
+            <p>Your access token: {localStorage.getItem("user")}</p>
         </div>
     );
 };
-
+/*
 Callback.propTypes = {
-    userManager: UserManager
+    userManager: UserManager,
+    user: State,
 };
-
+*/
 export default Callback;

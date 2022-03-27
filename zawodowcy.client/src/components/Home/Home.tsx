@@ -1,17 +1,27 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {UserManager} from "oidc-client-ts";
 
-const Home = ({userManager}: any) => {
+
+interface UserProps {
+    userManager: UserManager;
+    user: any;
+    setUser: any;
+}
+
+const Home:FC<UserProps> = (props) => {
     return (
         <div>
-            {userManager.user ? (
+            {props.user ? (
                 <>
-                    <h3>Welcome {userManager.user?.user?.profile?.sub}</h3>
-                    <pre>{JSON.stringify(userManager.user?.data, null, 2)}</pre>
+                    <h3>Welcome {props.user?.user?.profile?.sub}</h3>
+                    <pre>{JSON.stringify(props.user?.data, null, 2)}</pre>
                     <p>{process.env.REACT_APP_IDENTITY_SERVER_URI as string}</p>
                     <button onClick={ () => {
-                        console.log(userManager);
-                        userManager.signoutRedirect();
+                        console.log(props.userManager);
+                        localStorage.removeItem("user");
+                        props.setUser(false);
+                        props.userManager.signoutRedirect();
+                        
                     }}>
                         Log out
                     </button>
@@ -21,19 +31,19 @@ const Home = ({userManager}: any) => {
                     <h3>React Weather App</h3>
                     <p>{process.env.REACT_APP_IDENTITY_SERVER_URI}</p>
                     <button onClick={() => {
-                        console.log(userManager);
+                        console.log(props.userManager);
                         console.log(process.env.REACT_APP_IDENTITY_SERVER_URI as string);
-                        console.log(userManager.authority)
-                        userManager.signinRedirect()
+                        //console.log(props.userManager.authority)
+                        props.userManager.signinRedirect()
                     }}>Login</button>
                 </>
             )}
         </div>
     );
 };
-
+/*
 Home.propTypes = {
     userManager: UserManager
 }
-
+*/
 export default Home;

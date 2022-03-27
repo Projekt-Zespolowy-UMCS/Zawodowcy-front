@@ -4,8 +4,8 @@ import UserManagerService, {UserManagerServiceContext} from "./components/Shared
 import Home from "./components/Home/Home";
 import Callback from "./components/Home/Callback/Callback";
 import userManagerService from "./components/Shared/UserManagerService";
-import {UserManager, UserManagerSettingsStore} from "oidc-client-ts";
-import {useContext, useEffect, useRef} from "react";
+import {User, UserManager, UserManagerSettingsStore} from "oidc-client-ts";
+import {useContext, useEffect, useRef, useState} from "react";
 
 const App = () => {
 
@@ -29,12 +29,13 @@ const App = () => {
     }
 
     const userManager = new UserManager(userManagerConfig);
+    const [user, setUser] = useState<boolean>(localStorage.getItem("user") ? true : false);
     
     return (
         <BrowserRouter>
             <Routes >
-                <Route path='/callback' element={<Callback userManager={userManager} />} />
-                <Route path='/' element={<Home userManager={userManager}/>} />
+                <Route path='/callback' element={<Callback userManager={userManager} user={user}  setUser={setUser}/>} />
+                <Route path='/' element={<Home userManager={userManager}  user={user}  setUser={setUser}/>} />
             </Routes >
         </BrowserRouter>
     );
