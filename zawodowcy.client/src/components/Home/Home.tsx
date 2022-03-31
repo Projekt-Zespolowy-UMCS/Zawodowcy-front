@@ -18,10 +18,9 @@ const Home:FC<UserProps> = (props) => {
                     <p>{process.env.REACT_APP_IDENTITY_SERVER_URI as string}</p>
                     <button onClick={ () => {
                         console.log(props.userManager);
+                        props.userManager.signoutRedirect();
                         localStorage.removeItem("user");
                         props.setUser(false);
-                        props.userManager.signoutRedirect();
-                        
                     }}>
                         Log out
                     </button>
