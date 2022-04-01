@@ -1,24 +1,18 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import {
     AppBar,
     Toolbar,
-    IconButton,
-    CssBaseline,
-    Button,
     Typography,
     Theme,
     useMediaQuery,
-    Switch,
     Divider
 } from "@mui/material";
-import MenuIcon from '@mui/icons-material/Menu';
-import { makeStyles, createStyles } from '@mui/styles';
-import { blue } from "@mui/material/colors";
+import { makeStyles } from '@mui/styles';
 import { useTheme } from '@mui/material/styles';
 import MainDrawer from "./MainDrawer"
+import ThemeSwitch from "../ThemeMode/ThemeSwitch";
 
-import DarkModeIcon from '@mui/icons-material/DarkMode';
 const useStyles = makeStyles((theme: Theme) => ({
     title: {
         flexGrow: 1,
@@ -77,8 +71,9 @@ const Header: FC = () => {
                             </Link>
 
                             <Divider />
-                            <DarkModeIcon />
-                            <Switch />
+                            <div className={classes.link}>
+                                <ThemeSwitch />
+                            </div>
                         </div>
 
                     </>

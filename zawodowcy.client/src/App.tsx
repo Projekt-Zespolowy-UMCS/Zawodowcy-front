@@ -12,6 +12,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { DarkMode } from '@mui/icons-material';
 import { StyledEngineProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { useColorMode } from './components/ThemeMode/ThemeContext';
+import { ColorModeContextProvider } from "./components/ThemeMode/ThemeContext";
+
+
 
 const App = () => {
     const userManagerConfig = {
@@ -32,10 +36,13 @@ const App = () => {
     const userManager = new UserManager(userManagerConfig);
     const [user, setUser] = useState<boolean>(localStorage.getItem("user") ? true : false);
 
+    const { toggleColorMode } = useColorMode();
+
     return (
         <StyledEngineProvider injectFirst>
-            <ThemeProvider theme={darkTheme}>
+            <ColorModeContextProvider>
                 <CssBaseline />
+
                 <Router>
                     <Header />
                     <Routes >
@@ -43,7 +50,7 @@ const App = () => {
                         <Route path='/' element={<Home userManager={userManager} user={user} setUser={setUser} />} />
                     </Routes >
                 </Router>
-            </ThemeProvider>
+            </ColorModeContextProvider>
         </StyledEngineProvider>
     );
 }
