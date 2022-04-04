@@ -1,5 +1,6 @@
 import {useEffect, useState, FC} from "react";
 import {State, User, UserManager} from "oidc-client-ts";
+import { useNavigate } from "react-router-dom";
 
 interface UserProps {
     userManager: UserManager;
@@ -8,6 +9,7 @@ interface UserProps {
 }
 
 const Callback:FC<UserProps> = (props) => {
+    /*
     useEffect(() => {
         props.userManager.signinRedirectCallback().then((user: User) => {
             console.log("XDDDDD")
@@ -22,11 +24,32 @@ const Callback:FC<UserProps> = (props) => {
             }
         });
     });
+*/
+    const navigate = useNavigate();
+
+    const onSuccessCallback = (user: User) => {
+        localStorage.setItem("user", user.access_token);
+        localStorage.setItem("id_token", user.id_token || '');
+        console.log(user);
+        navigate('/');
+    }
+
+    const onErrorCallback = (error: Error) => {
+        console.log(error);
+        navigate('/');
+    }
+
+    useEffect(() => {
+        props.userManager
+        .signinRedirectCallback()
+        .then(user => onSuccessCallback(user))
+        .catch(error => onErrorCallback(error));
+    });
 
     return (
         <div>
             <p>Loading user data...</p>
-            <p>Your access token: {localStorage.getItem("user")}</p>
+            <p>Your access token: {localStorage.getItem("user") ?  <>ZALOGOWANO</> :<> nie ZALOGOWANO </>}</p>
         </div>
     );
 };

@@ -1,5 +1,5 @@
-import React, {FC} from 'react';
-import {UserManager} from "oidc-client-ts";
+import React, {FC, useEffect, useState} from 'react';
+import {User, UserManager} from "oidc-client-ts";
 
 
 interface UserProps {
@@ -9,6 +9,24 @@ interface UserProps {
 }
 
 const Home:FC<UserProps> = (props) => {
+    const [state, setState] = useState<User | null>();
+
+    
+	useEffect(() => {
+		// mgr.getUser().then((user) => {
+		// 	if (user) {
+		// 		var api = new WeatherAPI("https://localhost:5002");
+		// 		api.getWeatherForecast(user.access_token).then((data) =>
+		// 			setState({ user, data })
+		// 		);
+		// 	}
+		// });
+		props.userManager.getUser().then((user) => {
+			setState(user);
+		});
+	}, []);
+
+    console.log(state);
     return (
         <div>
             {props.user ? (
@@ -18,7 +36,7 @@ const Home:FC<UserProps> = (props) => {
                     <p>{process.env.REACT_APP_IDENTITY_SERVER_URI as string}</p>
                     <button onClick={ () => {
                         console.log(props.userManager);
-                        props.userManager.signoutRedirect();
+                        props.userManager.signoutRedirect({id_token_hint: state?.id_token});
                         localStorage.removeItem("user");
                         props.setUser(false);
                     }}>
@@ -33,7 +51,8 @@ const Home:FC<UserProps> = (props) => {
                         console.log(props.userManager);
                         console.log(process.env.REACT_APP_IDENTITY_SERVER_URI as string);
                         //console.log(props.userManager.authority)
-                        props.userManager.signinRedirect()
+                        props.userManager.signinRedirect();
+                        props.userManager.removeUser();
                     }}>Login</button>
                 </>
             )}
