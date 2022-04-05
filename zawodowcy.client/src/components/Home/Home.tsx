@@ -1,6 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import {User, UserManager} from "oidc-client-ts";
-
+import Axios from "axios";
+import Cookies from 'js-cookie';
 
 interface UserProps {
     userManager: UserManager;
@@ -37,6 +38,7 @@ const Home:FC<UserProps> = (props) => {
                     <button onClick={ () => {
                         console.log(props.userManager);
                         props.userManager.signoutRedirect({id_token_hint: state?.id_token});
+                        Cookies.remove('idsrv.session')
                         localStorage.removeItem("user");
                         props.setUser(false);
                     }}>

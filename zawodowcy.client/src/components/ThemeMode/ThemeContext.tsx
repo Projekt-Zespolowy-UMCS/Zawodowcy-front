@@ -1,9 +1,11 @@
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React, { FC } from "react";
+import Cookies from 'js-cookie';
+
 interface IColorModeContext {
     toggleColorMode: () => void;
-    mode: "light" | "dark";
+    mode: string;
 }
 
 export const ColorModeContext = React.createContext<IColorModeContext>({
@@ -13,11 +15,17 @@ export const ColorModeContext = React.createContext<IColorModeContext>({
 
 
 export const ColorModeContextProvider: FC = ({ children }) => {
-    const [mode, setMode] = React.useState<"light" | "dark">("light");
+    const localTheme = Cookies.get("theme");
+    const initMode:"light" | "dark" = localTheme === "dark" || localTheme === "light" ? localTheme : "light"
+    Cookies.set("theme", initMode);
+    const [mode, setMode] = React.useState<"light" | "dark">(initMode);
     const colorMode = React.useMemo(
         () => ({
             toggleColorMode: () => {
+                //for some reason if i save mode to the local storage it is the opossite of the current value of the theme xD
+                Cookies.set("theme", mode === "dark" ? "light" : "dark");
                 setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+                console.log("HEJ ", mode);
             },
             mode,
         }),
@@ -34,7 +42,6 @@ export const ColorModeContextProvider: FC = ({ children }) => {
         }), [mode]
     );
 
-    console.log("XD "+ mode);
     return (
         <ColorModeContext.Provider value={colorMode}>
             <ThemeProvider theme={theme}>

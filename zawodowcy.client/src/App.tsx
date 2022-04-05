@@ -27,22 +27,14 @@ const App = () => {
         scope: 'openid profile'
     }
 
-    const darkTheme = createTheme({
-        palette: {
-            mode: "dark",
-        }
-    });
 
     const userManager = new UserManager(userManagerConfig);
     const [user, setUser] = useState<boolean>(localStorage.getItem("user") ? true : false);
-
-    const { toggleColorMode } = useColorMode();
 
     return (
         <StyledEngineProvider injectFirst>
             <ColorModeContextProvider>
                 <CssBaseline />
-
                 <Router>
                     <Header />
                     <Routes >

@@ -7,6 +7,7 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 export const ThemeSwitch: FC = () => {
     const {mode, toggleColorMode} = useContext(ColorModeContext);
 
+
     return (
         <>
             <LightModeIcon />
