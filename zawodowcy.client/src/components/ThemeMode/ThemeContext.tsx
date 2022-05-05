@@ -25,7 +25,6 @@ export const ColorModeContextProvider: FC = ({ children }) => {
                 //for some reason if i save mode to the local storage it is the opossite of the current value of the theme xD
                 Cookies.set("theme", mode === "dark" ? "light" : "dark");
                 setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
-                console.log("HEJ ", mode);
             },
             mode,
         }),
