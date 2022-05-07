@@ -1,7 +1,6 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useContext, useEffect, useState} from 'react';
 import {User, UserManager} from "oidc-client-ts";
-import Axios from "axios";
-import Cookies from 'js-cookie';
+import { UserManagerContext } from '../Shared/UserManagerContext';
 
 interface UserProps {
     userManager: UserManager;
@@ -11,34 +10,29 @@ interface UserProps {
 
 const Home:FC<UserProps> = (props) => {
     const [state, setState] = useState<User | null>();
-
+    const userManager = useContext(UserManagerContext);
     
 	useEffect(() => {
-		// mgr.getUser().then((user) => {
-		// 	if (user) {
-		// 		var api = new WeatherAPI("https://localhost:5002");
-		// 		api.getWeatherForecast(user.access_token).then((data) =>
-		// 			setState({ user, data })
-		// 		);
-		// 	}
-		// });
-		props.userManager.getUser().then((user) => {
+        console.log(userManager?.getUser())
+        console.log("XDDDDDDDDDDD");
+		userManager?.getUser().then((user) => {
 			setState(user);
 		});
 	}, []);
 
+
+
     console.log(state);
     return (
         <div>
-            {props.user ? (
+            {state ? (
                 <>
                     <h3>Welcome {props.user?.user?.profile?.sub}</h3>
                     <pre>{JSON.stringify(props.user?.data, null, 2)}</pre>
                     <p>{process.env.REACT_APP_IDENTITY_SERVER_URI as string}</p>
                     <button onClick={ () => {
                         console.log(props.userManager);
-                        props.userManager.signoutRedirect({id_token_hint: state?.id_token});
-                        Cookies.remove('idsrv.session')
+                        userManager?.signoutRedirect({id_token_hint: state?.id_token});
                         localStorage.removeItem("user");
                         props.setUser(false);
                     }}>
@@ -53,9 +47,10 @@ const Home:FC<UserProps> = (props) => {
                         console.log(props.userManager);
                         console.log(process.env.REACT_APP_IDENTITY_SERVER_URI as string);
                         //console.log(props.userManager.authority)
-                        props.userManager.signinRedirect();
-                        props.userManager.removeUser();
+                        userManager?.signinRedirect();
+                        userManager?.removeUser();
                     }}>Login</button>
+                    <button onClick={() => console.log(userManager)}> XD </button>
                 </>
             )}
         </div>

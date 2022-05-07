@@ -14,6 +14,7 @@ import { StyledEngineProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { useColorMode } from './components/ThemeMode/ThemeContext';
 import { ColorModeContextProvider } from "./components/ThemeMode/ThemeContext";
+import { UserManagerContextProvider } from "./components/Shared/UserManagerContext";
 
 
 
@@ -35,13 +36,15 @@ const App = () => {
         <StyledEngineProvider injectFirst>
             <ColorModeContextProvider>
                 <CssBaseline />
-                <Router>
-                    <Header />
-                    <Routes >
-                        <Route path='/callback' element={<Callback userManager={userManager} user={user} setUser={setUser} />} />
-                        <Route path='/' element={<Home userManager={userManager} user={user} setUser={setUser} />} />
-                    </Routes >
-                </Router>
+                <UserManagerContextProvider>
+                    <Router>
+                        <Header />
+                        <Routes >
+                            <Route path='/callback' element={<Callback userManager={userManager} user={user} setUser={setUser} />} />
+                            <Route path='/' element={<Home userManager={userManager} user={user} setUser={setUser} />} />
+                        </Routes >
+                    </Router>
+                </UserManagerContextProvider>
             </ColorModeContextProvider>
         </StyledEngineProvider>
     );
