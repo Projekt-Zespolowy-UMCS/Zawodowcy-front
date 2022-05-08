@@ -63,8 +63,8 @@ const Header: FC = () => {
                             <Link to="/" className={classes.link}>
                                 Home
                             </Link>
-                            <Link to="/callback" className={classes.link}>
-                                Callback
+                            <Link to="/register" className={classes.link}>
+                                Register
                             </Link>
                             <Link to="/login" className={classes.link}>
                                 Login

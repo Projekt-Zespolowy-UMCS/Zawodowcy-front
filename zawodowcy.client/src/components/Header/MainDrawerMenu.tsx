@@ -33,8 +33,8 @@ export const MainDrawerMenu: FC<IDrawerProps> = (props) => {
                     <ListItemText> Home </ListItemText>
                 </MenuItem>
                 <Divider />
-                <MenuItem component={Link} to={"/callback"} onClick={props.toggleDrawerState}>
-                    <ListItemText> Callback </ListItemText>
+                <MenuItem component={Link} to={"/register"} onClick={props.toggleDrawerState}>
+                    <ListItemText> Register </ListItemText>
                 </MenuItem>
                 <Divider />
                 <MenuItem component={Link} to={"/login"} onClick={props.toggleDrawerState}>

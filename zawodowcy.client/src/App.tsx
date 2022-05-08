@@ -7,7 +7,8 @@ import userManagerService from "./components/Shared/UserManagerService";
 import { User, UserManager, UserManagerSettingsStore } from "oidc-client-ts";
 import { useContext, useEffect, useRef, useState } from "react";
 import Header from "./components/Header/Header";
-
+import Register from "./components/Register/Register";
+import Test from "./components/Register/Test";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { DarkMode } from '@mui/icons-material';
 import { StyledEngineProvider } from '@mui/material/styles';
@@ -42,6 +43,8 @@ const App = () => {
                         <Routes >
                             <Route path='/callback' element={<Callback userManager={userManager} user={user} setUser={setUser} />} />
                             <Route path='/' element={<Home userManager={userManager} user={user} setUser={setUser} />} />
+                            <Route path='/register' element={<Register/>} />
+                            <Route path='/test' element={<Test/>}/>
                         </Routes >
                     </Router>
                 </UserManagerContextProvider>
