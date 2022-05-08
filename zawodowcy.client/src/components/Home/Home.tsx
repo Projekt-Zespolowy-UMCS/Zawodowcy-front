@@ -18,7 +18,7 @@ const Home:FC<UserProps> = (props) => {
 		userManager?.getUser().then((user) => {
 			setState(user);
 		});
-	}, []);
+	}, [userManager]);
 
 
 
@@ -32,7 +32,7 @@ const Home:FC<UserProps> = (props) => {
                     <p>{process.env.REACT_APP_IDENTITY_SERVER_URI as string}</p>
                     <button onClick={ () => {
                         console.log(props.userManager);
-                        userManager?.signoutRedirect({id_token_hint: state?.id_token});
+                        userManager?.signoutRedirect({id_token_hint: state?.id_token, post_logout_redirect_uri: "http://localhost:3000"});
                         localStorage.removeItem("user");
                         props.setUser(false);
                     }}>
