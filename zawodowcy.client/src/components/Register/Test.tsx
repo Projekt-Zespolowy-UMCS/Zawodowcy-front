@@ -25,7 +25,7 @@ export const Test: FC = () => {
             >
             <Paper sx={{
                 textAlign: "center",
-                padding: '30px 20px', width: 300, margin: "20px auto" 
+                padding: '20px 20px', margin: "10px auto" 
             }}
                 component={Grid}
                 container
@@ -34,17 +34,20 @@ export const Test: FC = () => {
                 elevation={15}
                 xs={4}
             >
+                <Grid item xs={12}>
+                <h2> NO SIEMA </h2>
+                </Grid>
                 <Grid item xs={6}>
                     <TextField fullWidth margin="normal" label="Email" placeholder="Enter your email" />
+                    <TextField  fullWidth margin="normal" label="Email" placeholder="Enter your email" />
+                    <TextField  fullWidth margin="normal" label="Email" placeholder="Enter your email" />
+                    <TextField  fullWidth margin="normal" label="Email" placeholder="Enter your email" />
                 </Grid>
                 <Grid item xs={6}>
                     <TextField  fullWidth margin="normal" label="Email" placeholder="Enter your email" />
-                </Grid>
-                <Grid item xs={4}>
-                    <Item>xs=4</Item>
-                </Grid>
-                <Grid item xs={8}>
-                    <Item>xs=8</Item>
+                    <TextField  fullWidth margin="normal" label="Email" placeholder="Enter your email" />
+                    <TextField  fullWidth margin="normal" label="Email" placeholder="Enter your email" />
+                    <Button variant='contained'> XD </Button>
                 </Grid>
             </Paper>
         </Grid>

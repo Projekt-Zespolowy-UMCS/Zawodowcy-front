@@ -21,3 +21,7 @@ class CountriesService {
 }
 
 export default new CountriesService();
+/*
+{countries.map((country: any, index: any) => {
+                            return <option value={country.name} key={country.iso + index}>{country.name}</option>
+                        })} */

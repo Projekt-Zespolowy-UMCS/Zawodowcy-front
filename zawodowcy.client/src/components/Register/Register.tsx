@@ -1,71 +1,157 @@
-import React, { FC, useEffect, useState } from "react";
-import { Grid, Paper, Typography, TextField, Button, Select, MenuItem, NativeSelect } from "@mui/material";
+import React, { FC, useEffect, useState, useContext, ChangeEvent } from "react";
+import { Grid, Paper, Typography, TextField, Button, Select, MenuItem, NativeSelect, Box, Container } from "@mui/material";
 import CountryService from "../../services/CountriesService";
+import { Link } from "react-router-dom"
+import { ColorModeContext } from "../ThemeMode/ThemeContext";
+
+interface IRegisterData {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    secondPassword: string;
+    phoneNumber: string;
+}
 
 export const Register: FC = () => {
-    const [countries, setCountries] = useState<any>(null);
-    const [selectedCountry, setSelectedCountry] = useState<any>("Any");
 
-    const updateCountriesList = (): void => {
-        if (countries) return;
-        CountryService.getCountryList()
-            .then(response => {
-                console.log(response);
-                setCountries(response);
-                
-            }).catch(error => {
-                const resMessage =
-                    (error.response &&
-                        error.response.data &&
-                        error.response.data.message) ||
-                    error.message ||
-                    error.toString();
-                console.log(resMessage);
-            })
+    const initialRegisterState = {
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        secondPassword: "",
+        phoneNumber: "",
     }
 
-    useEffect(() => {
-        updateCountriesList()
-    }, []);
+    const [formValues, setFormValues] = useState<IRegisterData>(initialRegisterState)
+    const [submitted, setSubmitted] = useState<boolean>(false);
+    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        setFormValues({ ...formValues, [name]: value });
+    };
 
-    const handleChange = (event: any): void => {
-        setSelectedCountry(event.target.value);
+    const register = () => {
+        var data = {
+            firstName: formValues.firstName,
+            lastName: formValues.lastName,
+            email: formValues.email,
+            password: formValues.password,
+            secondPassword: formValues.secondPassword,
+            phoneNumber: formValues.phoneNumber,
+        }
+        alert(JSON.stringify(data));
     }
 
-    const paperStyle = { padding: '30px 20px', width: 300, margin: "20px auto" }
-    const headerStyle = { margin: 0, align: 'center' }
     return (
-        <Grid container>
-            <Paper elevation={20} style={paperStyle}>
-                <Grid container justifyContent="center">
-                    <h2 style={headerStyle}> Register here </h2>
-                    <Typography variant='caption' gutterBottom>Please fill this form to create an account!</Typography>
-                </Grid>
-                <form>
-                    <TextField fullWidth margin="normal" label="Email" placeholder="Enter your email" />
-                    <TextField fullWidth margin="normal" label="First Name" placeholder="Enter your First Name" />
-                    <TextField fullWidth margin="normal" label="Last Name" placeholder="Enter your Last" />
-                    <TextField fullWidth margin="normal" label="Phone number" placeholder="Enter your phone number" />
-                    <Typography variant='caption' gutterBottom>Address</Typography>
-                    <TextField fullWidth margin="normal" label="Street" placeholder="Enter your Street name" />
-                    <TextField fullWidth margin="normal" label="City" placeholder="Enter your city" />
-                    <TextField fullWidth margin="normal" label="Zip Code" placeholder="Enter your Zip Code" />
-                   {countries && <NativeSelect
-                        sx={{margingTop: 5, marginBottom: 3}}
-                        value={selectedCountry}
-                        onChange={handleChange}
+        <Container component="main" maxWidth="xs">
+            <Box
+                sx={{
+                    marginTop: 10,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                }}>
+                <Typography component="h1" variant="h5">
+                    Register here
+                </Typography>
+                <Box component="form" noValidate onSubmit={register} sx={{ mt: 3 }}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                autoComplete="given-name"
+                                name="firstName"
+                                required
+                                fullWidth
+                                id="firstName"
+                                label="First Name"
+                                value={formValues.firstName}
+                                onChange={handleInputChange}
+                                autoFocus
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                required
+                                fullWidth
+                                id="lastName"
+                                label="Last Name"
+                                name="lastName"
+                                autoComplete="family-name"
+                                value={formValues.lastName}
+                                onChange={handleInputChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                required
+                                fullWidth
+                                id="email"
+                                label="Email Address"
+                                name="email"
+                                autoComplete="email"
+                                value={formValues.email}
+                                onChange={handleInputChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                required
+                                fullWidth
+                                name="password"
+                                label="Password"
+                                type="password"
+                                id="password"
+                                autoComplete="new-password"
+                                value={formValues.password}
+                                onChange={handleInputChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                required
+                                fullWidth
+                                name="secondPassword"
+                                label="Repeat Password"
+                                type="password"
+                                id="secondPassword"
+                                autoComplete="new-password"
+                                value={formValues.secondPassword}
+                                onChange={handleInputChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                required
+                                fullWidth
+                                id="phoneNumber"
+                                label="Phone Number"
+                                name="phoneNumber"
+                                autoComplete="phone"
+                                value={formValues.phoneNumber}
+                                onChange={handleInputChange}
+                            />
+                        </Grid>
+                    </Grid>
+                    <Button
+                        type="submit"
                         
-                        defaultValue={""}
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
                     >
-                    {countries.map((country:any, index:any) =>{
-                        return <option value={country.name} key={country.iso + index}>{country.name}</option>
-                    })}
-                    </NativeSelect> }
-                  
-                    <Button variant='contained' color='primary' onClick={() => { console.log(countries) }}>Sign up</Button>
-                </form>
-            </Paper>
-        </Grid>
+                        Sign Up
+                    </Button>
+                    <Grid container justifyContent="flex-end">
+                        <Grid item>
+                            <Link to="/">
+                                Already have an account? Sign in
+                            </Link>
+                        </Grid>
+                    </Grid>
+                </Box>
+            </Box>
+        </Container>
     );
 
 }
