@@ -13,6 +13,24 @@ interface IRegisterData {
     phoneNumber: string;
 }
 
+interface IRegisterErrors {
+    firstName: boolean;
+    lastName: boolean;
+    email: boolean;
+    password: boolean;
+    secondPassword: boolean;
+    phoneNumber: boolean;
+}
+
+const initialRegisterErrors = {
+    firstName: false,
+    lastName: false,
+    email: false,
+    password: false,
+    secondPassword: false,
+    phoneNumber: false,
+}
+
 export const Register: FC = () => {
 
     const initialRegisterState = {
@@ -25,13 +43,18 @@ export const Register: FC = () => {
     }
 
     const [formValues, setFormValues] = useState<IRegisterData>(initialRegisterState)
+    const [formErrors, setFormErrors] = useState<IRegisterData>(initialRegisterState);
     const [submitted, setSubmitted] = useState<boolean>(false);
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         setFormValues({ ...formValues, [name]: value });
     };
 
-    const register = () => {
+    const register = (event: ChangeEvent<HTMLInputElement>) => {
+        event.preventDefault();
+        setFormErrors(validate(formValues));
+        setSubmitted(true);
+        if(Object.values(formErrors).every(x => !x)) return;
         var data = {
             firstName: formValues.firstName,
             lastName: formValues.lastName,
@@ -41,6 +64,27 @@ export const Register: FC = () => {
             phoneNumber: formValues.phoneNumber,
         }
         alert(JSON.stringify(data));
+    }
+
+    const validate = (values: IRegisterData):IRegisterData => {
+        const errors: IRegisterData = initialRegisterState;
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
+        const phoneRegex = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
+
+        if (!regex.test(values.email)) {
+            errors.email = "This is not a valid email format!";
+        }
+        if(!passwordRegex.test(values.password)) {
+            errors.password = "The password needs to be atleast 6 characters long and must contain atleast one each of the following: Upper character, Lower character, number and non alphanumeric character"
+        }
+        if(values.password !== values.secondPassword){
+            errors.secondPassword = "Passwords are not the same"
+        }
+        if(!phoneRegex.test(values.phoneNumber)){
+            errors.phoneNumber = "This is not valid phone number"
+        }
+        return errors;
     }
 
     return (
@@ -55,7 +99,7 @@ export const Register: FC = () => {
                 <Typography component="h1" variant="h5">
                     Register here
                 </Typography>
-                <Box component="form" noValidate onSubmit={register} sx={{ mt: 3 }}>
+                <Box component="form" onSubmit={register} sx={{ mt: 3 }}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -92,6 +136,7 @@ export const Register: FC = () => {
                                 autoComplete="email"
                                 value={formValues.email}
                                 onChange={handleInputChange}
+                                {...(formErrors.email && {error:true, helperText:formErrors.email})}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -105,6 +150,7 @@ export const Register: FC = () => {
                                 autoComplete="new-password"
                                 value={formValues.password}
                                 onChange={handleInputChange}
+                                {...(formErrors.password && {error:true, helperText:formErrors.password})}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -118,6 +164,7 @@ export const Register: FC = () => {
                                 autoComplete="new-password"
                                 value={formValues.secondPassword}
                                 onChange={handleInputChange}
+                                {...(formErrors.secondPassword && {error:true, helperText:formErrors.secondPassword})}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -130,12 +177,13 @@ export const Register: FC = () => {
                                 autoComplete="phone"
                                 value={formValues.phoneNumber}
                                 onChange={handleInputChange}
+                                {...(formErrors.phoneNumber && {error:true, helperText:formErrors.phoneNumber})}
                             />
                         </Grid>
                     </Grid>
                     <Button
                         type="submit"
-                        
+
                         fullWidth
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
