@@ -1,6 +1,7 @@
 import React, {FC, useContext, useEffect, useState} from 'react';
 import {User, UserManager} from "oidc-client-ts";
 import { UserManagerContext } from '../Shared/UserManagerContext';
+import AuthService from "../../services/AuthService";
 
 interface UserProps {
     userManager: UserManager;
@@ -32,7 +33,7 @@ const Home:FC<UserProps> = (props) => {
                     <p>{process.env.REACT_APP_IDENTITY_SERVER_URI as string}</p>
                     <button onClick={ () => {
                         console.log(props.userManager);
-                        userManager?.signoutRedirect({id_token_hint: state?.id_token, post_logout_redirect_uri: "http://localhost:3000"});
+                        userManager?.signoutPopup();
                         localStorage.removeItem("user");
                         props.setUser(false);
                     }}>
@@ -47,7 +48,7 @@ const Home:FC<UserProps> = (props) => {
                         console.log(props.userManager);
                         console.log(process.env.REACT_APP_IDENTITY_SERVER_URI as string);
                         //console.log(props.userManager.authority)
-                        userManager?.signinRedirect();
+                        userManager?.signinPopup().then(user => {setState(user)});
                         userManager?.removeUser();
                     }}>Login</button>
                     <button onClick={() => console.log(userManager)}> XD </button>

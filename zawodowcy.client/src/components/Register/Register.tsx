@@ -13,24 +13,6 @@ interface IRegisterData {
     phoneNumber: string;
 }
 
-interface IRegisterErrors {
-    firstName: boolean;
-    lastName: boolean;
-    email: boolean;
-    password: boolean;
-    secondPassword: boolean;
-    phoneNumber: boolean;
-}
-
-const initialRegisterErrors = {
-    firstName: false,
-    lastName: false,
-    email: false,
-    password: false,
-    secondPassword: false,
-    phoneNumber: false,
-}
-
 export const Register: FC = () => {
 
     const initialRegisterState = {
@@ -70,7 +52,7 @@ export const Register: FC = () => {
         const errors: IRegisterData = initialRegisterState;
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
-        const phoneRegex = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
+        const phoneRegex = /^[0-9]{6,14}$/;
 
         if (!regex.test(values.email)) {
             errors.email = "This is not a valid email format!";

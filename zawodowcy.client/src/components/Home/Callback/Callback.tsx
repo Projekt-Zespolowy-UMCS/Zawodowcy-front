@@ -41,9 +41,7 @@ const Callback:FC<UserProps> = (props) => {
 
     useEffect(() => {
         props.userManager
-        .signinRedirectCallback()
-        .then(user => onSuccessCallback(user))
-        .catch(error => onErrorCallback(error));
+        .signinPopupCallback()
     });
 
     return (
