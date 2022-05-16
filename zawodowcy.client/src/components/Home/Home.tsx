@@ -1,7 +1,6 @@
 import React, {FC, useContext, useEffect, useState} from 'react';
 import {User, UserManager} from "oidc-client-ts";
-import { UserManagerContext } from '../Shared/UserManagerContext';
-import AuthService from "../../services/AuthService";
+import { AuthServiceContext } from '../Shared/UserManagerContext';
 
 interface UserProps {
     userManager: UserManager;
@@ -10,32 +9,16 @@ interface UserProps {
 }
 
 const Home:FC<UserProps> = (props) => {
-    const [state, setState] = useState<User | null>();
-    const userManager = useContext(UserManagerContext);
+    const {authService} = useContext(AuthServiceContext);
     
-	useEffect(() => {
-        console.log(userManager?.getUser())
-        console.log("XDDDDDDDDDDD");
-		userManager?.getUser().then((user) => {
-			setState(user);
-		});
-	}, [userManager]);
-
-
-
-    console.log(state);
     return (
         <div>
-            {state ? (
+            {authService?.isAuthenticated() ? (
                 <>
                     <h3>Welcome {props.user?.user?.profile?.sub}</h3>
-                    <pre>{JSON.stringify(props.user?.data, null, 2)}</pre>
-                    <p>{process.env.REACT_APP_IDENTITY_SERVER_URI as string}</p>
                     <button onClick={ () => {
-                        console.log(props.userManager);
-                        userManager?.signoutPopup();
-                        localStorage.removeItem("user");
-                        props.setUser(false);
+                        
+                        authService?.logout();
                     }}>
                         Log out
                     </button>
@@ -45,21 +28,13 @@ const Home:FC<UserProps> = (props) => {
                     <h3>React Weather App</h3>
                     <p>{process.env.REACT_APP_IDENTITY_SERVER_URI}</p>
                     <button onClick={() => {
-                        console.log(props.userManager);
-                        console.log(process.env.REACT_APP_IDENTITY_SERVER_URI as string);
-                        //console.log(props.userManager.authority)
-                        userManager?.signinPopup().then(user => {setState(user)});
-                        userManager?.removeUser();
+                        authService?.login();
                     }}>Login</button>
-                    <button onClick={() => console.log(userManager)}> XD </button>
+                    <button onClick={() => console.log(authService?.userManager)}> XD </button>
                 </>
             )}
         </div>
     );
 };
-/*
-Home.propTypes = {
-    userManager: UserManager
-}
-*/
+
 export default Home;

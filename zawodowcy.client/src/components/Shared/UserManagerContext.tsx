@@ -1,5 +1,6 @@
-import React, { FC, createContext } from "react";
-import {UserManager} from "oidc-client-ts";
+import React, { FC, createContext, useState, useEffect } from "react";
+import { UserManager } from "oidc-client-ts";
+import AuthService from "../../services/AuthService"
 
 
 interface IUserManagerContext {
@@ -15,16 +16,29 @@ const userManagerConfig = {
     scope: 'openid profile'
 }
 
-export const UserManagerContext = createContext<UserManager | undefined>(undefined);
+interface IAuthService {
+    authService?: AuthService;
+}
 
-export const UserManagerContextProvider: FC = ({children}) => {
 
-    const userManager =  new UserManager(userManagerConfig);
+export const AuthServiceContext = createContext<IAuthService>({
+    authService: undefined
+});
 
-    return(
-        <UserManagerContext.Provider value={userManager}>
+export const AuthServiceContextProvider: FC = ({ children }) => {
+
+    const userManager = new UserManager(userManagerConfig);
+    
+
+    // the state below is used to force the rerender of page 
+    const [loginState, setLoginState] = useState<number>(0);
+
+    const authService = new AuthService(setLoginState, loginState);
+
+    return (
+        <AuthServiceContext.Provider value={{ authService }}>
             {children}
-        </UserManagerContext.Provider>
+        </AuthServiceContext.Provider>
     );
 }
 

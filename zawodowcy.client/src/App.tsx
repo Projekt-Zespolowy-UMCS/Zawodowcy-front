@@ -15,7 +15,7 @@ import { StyledEngineProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { useColorMode } from './components/ThemeMode/ThemeContext';
 import { ColorModeContextProvider } from "./components/ThemeMode/ThemeContext";
-import { UserManagerContextProvider } from "./components/Shared/UserManagerContext";
+import { AuthServiceContextProvider } from "./components/Shared/UserManagerContext";
 
 
 
@@ -37,7 +37,7 @@ const App = () => {
         <StyledEngineProvider injectFirst>
             <ColorModeContextProvider>
                 <CssBaseline />
-                <UserManagerContextProvider>
+                <AuthServiceContextProvider>
                     <Router>
                         <Header />
                         <Routes >
@@ -47,7 +47,7 @@ const App = () => {
                             <Route path='/test' element={<Test/>}/>
                         </Routes >
                     </Router>
-                </UserManagerContextProvider>
+                </AuthServiceContextProvider>
             </ColorModeContextProvider>
         </StyledEngineProvider>
     );
