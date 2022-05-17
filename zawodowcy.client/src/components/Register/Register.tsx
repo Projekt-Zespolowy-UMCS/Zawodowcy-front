@@ -45,15 +45,13 @@ export const Register: FC = () => {
             }
         }
     )
-    
+
 
     const register = (event: ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
-        const currentFormErrors = validate(formValues);
-        setFormErrors(currentFormErrors);
-        console.log(currentFormErrors);
-        console.log(Object.values(currentFormErrors).every(x => !x));
-        if (!Object.values(currentFormErrors).every(x => !x)) return;
+        setFormErrors(validate(formValues));
+        setSubmitted(true);
+        if (Object.values(formErrors).every(x => !x)) return;
         var data = {
             firstName: formValues.firstName,
             lastName: formValues.lastName,
