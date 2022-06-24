@@ -37,8 +37,11 @@ export const MainDrawerMenu: FC<IDrawerProps> = (props) => {
                     <ListItemText> Register </ListItemText>
                 </MenuItem>
                 <Divider />
-                <MenuItem component={Link} to={"/login"} onClick={props.toggleDrawerState}>
-                    <ListItemText> Login </ListItemText>
+                <MenuItem component={Link} to={"/offers"} onClick={props.toggleDrawerState}>
+                    <ListItemText> Offers </ListItemText>
+                </MenuItem>
+                <MenuItem component={Link} to={"/offers/add"} onClick={props.toggleDrawerState}>
+                    <ListItemText> Create Offer </ListItemText>
                 </MenuItem>
                 <Divider />
             </MenuList>

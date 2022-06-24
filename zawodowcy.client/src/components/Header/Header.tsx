@@ -66,10 +66,12 @@ const Header: FC = () => {
                             <Link to="/register" className={classes.link}>
                                 Register
                             </Link>
-                            <Link to="/login" className={classes.link}>
-                                Login
+                            <Link to="/offers" className={classes.link}>
+                                Offers
                             </Link>
-
+                            <Link to="/offers/add" className={classes.link}>
+                                Create Offer
+                            </Link>
                             <Divider />
                             <div className={classes.link}>
                                 <ThemeSwitch />

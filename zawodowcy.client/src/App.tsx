@@ -7,6 +7,7 @@ import { User, UserManager, UserManagerSettingsStore } from "oidc-client-ts";
 import { useContext, useEffect, useRef, useState } from "react";
 import Header from "./components/Header/Header";
 import Register from "./components/Register/Register";
+import OffersList from "./components/Offers/Offer-list";
 import Test from "./components/Register/Test";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { DarkMode } from '@mui/icons-material';
@@ -15,6 +16,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { useColorMode } from './components/ThemeMode/ThemeContext';
 import { ColorModeContextProvider } from "./components/ThemeMode/ThemeContext";
 import { AuthServiceContextProvider } from "./components/Shared/UserManagerContext";
+import AddOffer from "./components/Offers/AddOffer";
 
 
 
@@ -44,6 +46,8 @@ const App = () => {
                             <Route path='/' element={<Home userManager={userManager} user={user} setUser={setUser} />} />
                             <Route path='/register' element={<Register/>} />
                             <Route path='/test' element={<Test/>}/>
+                            <Route path='/offers' element={<OffersList/>}/>
+                            <Route path='/offers/add' element={<AddOffer/>}/>
                         </Routes >
                     </Router>
                 </AuthServiceContextProvider>
