@@ -16,6 +16,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { useColorMode } from './components/ThemeMode/ThemeContext';
 import { ColorModeContextProvider } from "./components/ThemeMode/ThemeContext";
 import { AuthServiceContextProvider } from "./components/Shared/UserManagerContext";
+import AddOffer from "./components/Offers/AddOffer";
 
 
 
@@ -46,6 +47,7 @@ const App = () => {
                             <Route path='/register' element={<Register/>} />
                             <Route path='/test' element={<Test/>}/>
                             <Route path='/offers' element={<OffersList/>}/>
+                            <Route path='/offers/add' element={<AddOffer/>}/>
                         </Routes >
                     </Router>
                 </AuthServiceContextProvider>

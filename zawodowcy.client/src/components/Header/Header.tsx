@@ -69,6 +69,9 @@ const Header: FC = () => {
                             <Link to="/offers" className={classes.link}>
                                 Offers
                             </Link>
+                            <Link to="/offers/add" className={classes.link}>
+                                Create Offer
+                            </Link>
                             <Divider />
                             <div className={classes.link}>
                                 <ThemeSwitch />

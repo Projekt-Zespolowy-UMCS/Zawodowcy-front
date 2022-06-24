@@ -40,6 +40,9 @@ export const MainDrawerMenu: FC<IDrawerProps> = (props) => {
                 <MenuItem component={Link} to={"/offers"} onClick={props.toggleDrawerState}>
                     <ListItemText> Offers </ListItemText>
                 </MenuItem>
+                <MenuItem component={Link} to={"/offers/add"} onClick={props.toggleDrawerState}>
+                    <ListItemText> Create Offer </ListItemText>
+                </MenuItem>
                 <Divider />
             </MenuList>
         </Toolbar>
